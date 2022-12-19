@@ -1,0 +1,14 @@
+model:
+    detection_config_file: configs/mrcnn_config_inside.py
+    detection_ckpt_file: ckpt/epoch_50.pth
+    depth_checkpoint_path: ckpt/effv2
+    score: 0.0
+    encoder_number: 8
+
+reconstruction:
+    uniform_down_sample_num: 10
+    nb_neighbors: 20
+    std_ratio: 0.1
+    poisson_depth: 5
+    poisson_scale: 1
+    save: True
