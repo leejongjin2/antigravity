@@ -10,14 +10,13 @@ from PIL import Image
 
 # root_path = '/home/ljj/workspace/anti/HRNet-for-Fashion-Landmark-Estimation.PyTorch/data/deepfashion2/validation'
 
-root_path = '/home/ljj/dataset/anti_sample/train'
-# /home/ljj/workspace/antigravity/snuailab_dev/data/pad_sample'
+root_path = '/Users/kaejong/workspace/antigravity/test/image'
 # annFile = os.path.join(root_path, 'val-coco_style.json')
 annFile = os.path.join(root_path, 'pad.json')
 
 # imgFile = os.path.join(root_path, 'image', '000001.jpg')
 coco = COCO(annFile)
-catIds = coco.getCatIds(catNms=['Short sleeve top'])
+catIds = [0, 1]
 ids = coco.getImgIds(catIds=catIds)
 
 for imgIds in ids:
@@ -26,7 +25,7 @@ for imgIds in ids:
     print(anns)
     imgInfo = coco.loadImgs(imgIds)
     print(imgInfo)
-    image_name = os.path.join(root_path, 'images', imgInfo[0]['file_name'])
+    image_name = os.path.join(root_path, imgInfo[0]['file_name'])
     # image_name = os.path.join(root_path, imgInfo[0]['file_name'])
     image = Image.open(image_name).convert('RGB')
     plt.imshow(image)

@@ -39,22 +39,23 @@ def create_sub_mask_annotation(sub_mask):
     for contour in contours:
         # Flip from (row, col) representation to (x, y)
         # and subtract the padding pixel
-        for i in range(len(contour)):
-            row, col = contour[i]
-            contour[i] = (col - 1, row - 1)
+        if len(contour) > 30:
+            for i in range(len(contour)):
+                row, col = contour[i]
+                contour[i] = (col - 1, row - 1)
 
-        # Make a polygon and simplify it
-        poly = Polygon(contour)
-        # poly = poly.simplify(1.0, preserve_topology=False)
-        
-        if(poly.is_empty):
-            # Go to next iteration, dont save empty values in list
-            continue
+            # Make a polygon and simplify it
+            poly = Polygon(contour)
+            # poly = poly.simplify(1.0, preserve_topology=False)
+            
+            if(poly.is_empty):
+                # Go to next iteration, dont save empty values in list
+                continue
 
-        polygons.append(poly)
+            polygons.append(poly)
 
-        segmentation = np.array(poly.exterior.coords).ravel().tolist()
-        segmentations.append(segmentation)
+            segmentation = np.array(poly.exterior.coords).ravel().tolist()
+            segmentations.append(segmentation)
     
     return polygons, segmentations
 
@@ -66,7 +67,7 @@ def create_category_annotation(category_dict):
             # "supercategory": key,
             "id": value,
             "name": key,
-            "keypoints": list(range(7*3)),
+            "keypoints": list(range(3*3)),
             "skeleton" : []
         }
         category_list.append(category)
@@ -97,7 +98,7 @@ def create_annotation_format(polygon, segmentation, image_id, category_id, annot
         'id' : annotation_id,
         'image_id' : image_id,
         'iscrowd' : 0,
-        'num_keypoints' : 7,
+        'num_keypoints' : 3,
         'keypoints' : keypoint,
         'segmentation' : segmentation
     }

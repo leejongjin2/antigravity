@@ -5,16 +5,18 @@ from tqdm import tqdm
 from contour import save_mask_seperately
 import cv2
 from landmark_ import get_landmark, get_pad
+from PIL import Image
 
 # Label ids of the dataset
 category_ids = {
-    "pad": 0,
+    "pad1": 0,
+    "pad2": 1,
 }
 
 # Define which colors match which categories in the images
 
 
-json_path = '/home/ljj/workspace/antigravity/etc/mask_config.json'
+json_path = '/Users/kaejong/workspace/antigravity/etc/mask_config.json'
 with open(json_path, 'r') as f:
     config = json.load(f)
 
@@ -23,12 +25,13 @@ with open(json_path, 'r') as f:
 #     category_colors[str(tuple(v))] = i
     
 category_colors = {
-    "(100, 100, 100)": 0, # pad
+    "(100, 100, 100)": 0, # pad Left
+    "(101, 101, 101)": 1, # pad Right
 }
 
 landmark_colors = []
 for k, v in config.items():
-    if 'landmark' in k:
+    if 'landmark' in k and 'c' not in k:
         landmark_colors.append(tuple(v))
 # Define the ids that are a multiplolygon. In our case: wall, roof and sky
 multipolygon_ids = []
@@ -59,10 +62,13 @@ def images_annotations_info(maskpath):
             images.append(image)
 
             # sub_masks = create_sub_masks(mask_image_open, w, h)
-            sub_masks_cv = get_pad(mask_cv2, colors=[(33, 33, 33), (15, 15, 15)])
-            gray = cv2.cvtColor(sub_masks_cv, cv2.COLOR_BGR2GRAY)
-            key_points = get_landmark(mask_cv2, landmark_colors)
-            sub_masks = {'(100, 100, 100)': [gray, key_points]}
+            sub_mask1 = get_pad(mask_cv2, colors=[(33, 33, 33), (11, 11, 11), (5,5,5), (26,26,26), (29,29,29)])
+            key_points1 = get_landmark(mask_cv2, colors = [(5,5,5), (26,26,26), (29,29,29)])
+            sub_mask2 = get_pad(mask_cv2, colors=[(15, 15, 15), (28, 28, 28), (6,6,6), (13,13,13), (1,1,1)])
+            key_points2 = get_landmark(mask_cv2, colors = [(6,6,6), (13,13,13), (1,1,1)])
+            gray1 = cv2.cvtColor(sub_mask1, cv2.COLOR_BGR2GRAY)
+            gray2 = cv2.cvtColor(sub_mask2, cv2.COLOR_BGR2GRAY)
+            sub_masks = {'(100, 100, 100)': [gray1, key_points1], '(101, 101, 101)': [gray2, key_points2]}
 
             for color, (sub_mask, key_points) in sub_masks.items():
                 # if not color == "(100, 100, 100)":
@@ -96,8 +102,8 @@ def images_annotations_info(maskpath):
 if __name__ == "__main__":
     # Get the standard COCO JSON format
     coco_format = get_coco_json_format()
-    mask_path = '/home/ljj/dataset/anti_sample/'
     
+    mask_path = '/Users/kaejong/workspace/antigravity/test/image/'
     # save_mask_seperately(mask_path)
 
         
