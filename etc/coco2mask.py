@@ -8,25 +8,25 @@ from PIL import Image
 
 # annFile = '/home/ljj/workspace/antigravity/snuailab_dev/data/pad_sample/pad.json'
 
-root_path = '/home/ljj/workspace/antigravity/HRNet-for-Fashion-Landmark-Estimation.PyTorch/data/deepfashion2/validation'
+# root_path = '/home/ljj/workspace/anti/HRNet-for-Fashion-Landmark-Estimation.PyTorch/data/deepfashion2/validation'
 
-# root_path = '/home/ljj/workspace/antigravity/snuailab_dev/data/pad_sample'
-annFile = os.path.join(root_path, 'val-coco_style-64.json')
-# annFile = os.path.join(root_path, 'pad.json')
+root_path = '/home/ljj/dataset/anti_sample/train'
+# /home/ljj/workspace/antigravity/snuailab_dev/data/pad_sample'
+# annFile = os.path.join(root_path, 'val-coco_style.json')
+annFile = os.path.join(root_path, 'pad.json')
 
 # imgFile = os.path.join(root_path, 'image', '000001.jpg')
 coco = COCO(annFile)
-catIds = coco.getCatIds(catNms=['pad'])
+catIds = coco.getCatIds(catNms=['Short sleeve top'])
 ids = coco.getImgIds(catIds=catIds)
 
 for imgIds in ids:
     annIds = coco.getAnnIds(imgIds = imgIds, catIds=catIds)
-
     anns = coco.loadAnns(annIds)
     print(anns)
     imgInfo = coco.loadImgs(imgIds)
     print(imgInfo)
-    image_name = os.path.join(root_path, 'image', imgInfo[0]['file_name'])
+    image_name = os.path.join(root_path, 'images', imgInfo[0]['file_name'])
     # image_name = os.path.join(root_path, imgInfo[0]['file_name'])
     image = Image.open(image_name).convert('RGB')
     plt.imshow(image)

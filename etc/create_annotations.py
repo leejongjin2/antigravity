@@ -65,7 +65,9 @@ def create_category_annotation(category_dict):
         category = {
             # "supercategory": key,
             "id": value,
-            "name": key
+            "name": key,
+            "keypoints": list(range(7*3)),
+            "skeleton" : []
         }
         category_list.append(category)
 
@@ -81,7 +83,7 @@ def create_image_annotation(file_name, width, height, image_id):
 
     return images
 
-def create_annotation_format(polygon, segmentation, image_id, category_id, annotation_id):
+def create_annotation_format(polygon, segmentation, image_id, category_id, annotation_id, keypoint):
     min_x, min_y, max_x, max_y = polygon.bounds
     width = max_x - min_x
     height = max_y - min_y
@@ -89,14 +91,27 @@ def create_annotation_format(polygon, segmentation, image_id, category_id, annot
     area = polygon.area
 
     annotation = {
-        "segmentation": segmentation,
-        "area": area,
-        "iscrowd": 0,
-        "image_id": image_id,
-        "bbox": bbox,
-        "category_id": category_id,
-        "id": annotation_id
+        'area': area,
+        'bbox' : bbox,
+        'category_id' : category_id,
+        'id' : annotation_id,
+        'image_id' : image_id,
+        'iscrowd' : 0,
+        'num_keypoints' : 7,
+        'keypoints' : keypoint,
+        'segmentation' : segmentation
     }
+
+    # annotation = {
+    #     "area": area,
+    #     "iscrowd": 0,
+    #     "image_id": image_id,
+    #     "bbox": bbox,
+    #     "category_id": category_id,
+    #     "id": annotation_id,
+    #     "keypoints" : keypoint,
+    #     "segmentation": segmentation
+    # }
 
     return annotation
 
