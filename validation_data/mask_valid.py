@@ -20,13 +20,16 @@ def data_read(root_path:str):
     landmark_colors = []
     pad_colors = []
     wire_colors = []
-    file_lst = glob.glob(os.path.join(root_path, "*"))
+    file_lst = glob.glob(os.path.join(root_path,'images/*'))
 
     for file in file_lst:
-        if "_img" in file:
-            p = Path(file) # img
-            mask_file  = str(p.parent / (p.stem[:-3] + 'mask.png')) # mask
-            data_lst.append([file, mask_file])
+        maskname = os.path.basename(file).replace('img', 'mask')
+        mask_file  = os.path.join(root_path, 'segmentations', maskname)
+        if os.path.isfile(mask_file):
+            print('OK')
+        else:
+            print('sdafjklasf')
+        data_lst.append([file, mask_file])
 
     with open(args.config, 'r') as f:
         colors = json.load(f)
@@ -70,8 +73,8 @@ def onMouse(x):
 
 def img_blending(path, img, pad, wire, landmarks):
     cv2.namedWindow('imgPane')
-    cv2.createTrackbar('PAD', 'imgPane', 10, 100, onMouse)
-    cv2.createTrackbar('WIRE', 'imgPane', 10, 100, onMouse)
+    cv2.createTrackbar('PAD', 'imgPane', 50, 100, onMouse)
+    cv2.createTrackbar('WIRE', 'imgPane', 25, 100, onMouse)
 
     img_raw = img.copy()
     img_circle = img.copy()
@@ -117,7 +120,7 @@ def main(args):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, default= ROOT / 'mask_config.json', help='model.pt path')
-    parser.add_argument('--root_path', type=str, default='/home/ljj/dataset/anti_sample/train/images/', help='model.pt path')
+    parser.add_argument('--root_path', type=str, default='/home/ljj/dataset/chec', help='model.pt path')
     args = parser.parse_args()
     
     return args
