@@ -1,0 +1,13 @@
+{
+    "pad_l": [33, 33, 33],
+    "pad_r": [15,15,15],
+    "wire_l": [11,11,11],
+    "wire_r": [28,28,28],
+    "landmark_t1": [26,26,26],
+    "landmark_l": [29,29,29],
+    "landmark_b1": [5,5,5],
+    "landmark_b2": [6,6,6],
+    "landmark_r": [13,13,13],
+    "landmark_t2": [1,1,1],
+    "landmark_c": [14,14,14]
+}
