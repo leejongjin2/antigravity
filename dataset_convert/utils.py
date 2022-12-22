@@ -2,8 +2,28 @@ from PIL import Image                                      # (pip install Pillow
 import numpy as np                                         # (pip install numpy)
 from skimage import measure                                # (pip install scikit-image)
 from shapely.geometry import Polygon, MultiPolygon         # (pip install Shapely)
-import os
-import json
+import cv2
+
+def get_pad(mask: np.ndarray, colors) -> np.ndarray:
+    h, w, c = mask.shape
+    pad_mask = np.zeros((h, w, c), dtype=np.uint8)
+    for color in colors:
+        mask_copy = mask.copy()
+        mask_copy = np.array((mask_copy==color)*255, dtype=np.uint8)
+        pad_mask += mask_copy
+
+    return pad_mask
+
+def get_landmark(mask: np.ndarray, colors: list) -> list:
+    landmark_lst = []
+    for i, color in enumerate(colors):
+        mask_copy = mask.copy()
+        mask_copy = np.array((mask_copy==color)*255, dtype=np.uint8)
+        gray = cv2.cvtColor(mask_copy, cv2.COLOR_BGR2GRAY)
+        circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 20, param1 = 1, param2 = 1, minRadius = 0, maxRadius = 50)
+    
+        landmark_lst += [int(circles[0][0][0]), int(circles[0][0][1]), 1]
+    return landmark_lst
 
 def create_sub_masks(mask_image, width, height):
     # Initialize a dictionary of sub-masks indexed by RGB colors

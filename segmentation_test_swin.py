@@ -49,7 +49,6 @@ def parse_args():
     parser.add_argument('--model_path', type=str, default='/home/ljj/workspace/antigravity/snuailab_dev/work_dirs/pad_swin/epoch_23.pth', help='model.pt path')
     parser.add_argument('--result_path', type=str, default='/home/ljj/workspace/antigravity/test/result', help='result path')
     parser.add_argument('--input_path', type=str, default='/home/ljj/workspace/antigravity/snuailab_dev/data/pad_sample/', help='result path')
-    # parser.add_argument('--input_path', type=str, default='/home/ljj/workspace/antigravity/snuailab_dev/sample/4.jpg', help='result path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
     parser.add_argument('--conf-thres', type=float, default=0.9, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.5, help='NMS IoU threshold')

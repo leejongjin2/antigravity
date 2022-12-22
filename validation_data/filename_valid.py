@@ -2,7 +2,7 @@ import os
 import glob
 import shutil
 
-root_path = '/home/ljj/dataset/chec'
+root_path = '/home/ljj/dataset/datasets_2022_12_21'
 
 # images = glob.glob(os.path.join(root_path, 'images/*'))
 # segs = glob.glob(os.path.join(root_path, 'segmentation/*'))
@@ -29,6 +29,7 @@ def check_name(product_name, product_number,type_path, type, form='.png'):
             if product_number in os.path.basename(src_file):
                 dst_file = os.path.join(type_path, product_name + '_'+type+'_' + product_number+form)
                 shutil.move(src_file, dst_file)
+                print(src_file, dst_file)
 
 # print(images)
 for img_name in images:
